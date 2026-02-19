@@ -2,7 +2,7 @@
 
 A ready-to-use Raspberry Pi image for configuring the [G1LRO hardware COS variant of the AIOC (All-In-One Cable)](https://g1lro.uk/?p=828) and also [virtual COS](https://g1lro.uk/?p=842).
 
-The image comes with everything pre-installed — Python virtual environment, `aioc-util.py`, AIOC firmware v1.3.0, and a flash script — so you can be up and running in minutes without manual setup.
+The image comes with everything pre-installed — Python virtual environment, `aioc-util.py` from Hrafnkell Eiríksson, AIOC firmware v1.3.0, and a flash script — so you can be up and running in minutes without manual setup.
 
 ---
 
@@ -28,7 +28,7 @@ Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/):
 1. Open Raspberry Pi Imager
 2. Click **Choose OS → Use custom** and select the downloaded `aiocutil.img.gz`
 3. Choose your microSD card as the target
-4. Click the **settings (gear) icon** before writing — this lets you:
+4. Click the **settings** before writing — this lets you:
    - Set your own **username and password** (default: user `rln`, password `radioless`)
    - Configure your **Wi-Fi network**
    - Set your **hostname** and **locale** if needed
@@ -38,7 +38,7 @@ Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/):
 
 ### 3. Boot and Connect
 
-Insert the microSD card into your Raspberry Pi and power it on. Once booted, connect via SSH:
+Insert the microSD card into your Raspberry Pi and power it on. Once booted, connect using PUTTY or via SSH:
 
 ```bash
 ssh rln@<your-pi-ip-address>
@@ -123,10 +123,10 @@ cd ~/aioc-util
 
 The script will loop, watching for the AIOC to appear in DFU mode on USB. To enter DFU mode on the AIOC:
 
-1. Hold the boot button on the AIOC while plugging it into USB, **or**
-2. Run `./aioc-util.py --reboot` while the device is connected
+1. for new AIOC boards, bridge the programming jumper on the AIOC while plugging it into USB, **or**
+2. The flash untiity will find and existing AIOC with firmware and re-flash the 1.3 image
 
-Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop.
+Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop or the flash process will repeat. Do not interrrupt the process or unplug during the flas, wait for completion and then halt the process 'Ctrl-C'.
 
 ---
 
