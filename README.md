@@ -19,7 +19,7 @@ The image comes with everything pre-installed — Python virtual environment, `a
 
 ### 1. Download the Image
 
-Download `aiocutil.img.gz` from this repository's [releases](https://github.com/G1LRO/aioc-config/releases).
+Download `aiocutil.img.gz` from this repository's files area.
 
 ### 2. Flash to a microSD Card
 
