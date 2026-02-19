@@ -126,7 +126,7 @@ The script will loop, watching for the AIOC to appear in DFU mode on USB. To ent
 1. for new AIOC boards, bridge the programming jumper on the AIOC while plugging it into USB, **or**
 2. The flash untiity will find and existing AIOC with firmware and re-flash the 1.3 image
 
-Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop or the flash process will repeat. Do not interrrupt the process or unplug during the flas, wait for completion and then halt the process 'Ctrl-C'.
+Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop or the flash process will repeat. Do not interrrupt the process or unplug during the flash, wait for completion and then halt the process 'Ctrl-C'.
 
 ---
 
