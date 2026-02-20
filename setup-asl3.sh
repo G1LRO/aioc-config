@@ -13,7 +13,7 @@ echo "    Done. You may need to log out and back in for group changes to take ef
 
 echo "==> Step 2: Setting VCOS_TIMCTRL register to 1500..."
 cd ~/aioc-util
-./aioc-util.py --vcos-timctrl 1500 --store
+./aioc-util.py --vcos-timctr 1500 --store
 echo "    Done."
 
 echo "==> Step 3: Enabling AIOC in res_usbradio.conf..."
