@@ -28,7 +28,7 @@ Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/):
 1. Open Raspberry Pi Imager
 2. Click **Choose OS → Use custom** and select the downloaded `aiocutil.img.gz`
 3. Choose your microSD card as the target
-4. Change the settings before writing — this lets you:
+4. Click the settings before writing — this lets you:
    - Set your own **username and password** (default: user `rln`, password `radioless`)
    - Configure your **Wi-Fi network**
    - Set your **hostname** and **locale** if needed
@@ -38,7 +38,7 @@ Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/):
 
 ### 3. Boot and Connect
 
-Insert the microSD card into your Raspberry Pi and power it on. Once booted, connect via **PUTTY** or SSH:
+Insert the microSD card into your Raspberry Pi and power it on. Once booted, connect via SSH:
 
 ```bash
 ssh rln@<your-pi-ip-address>
@@ -183,6 +183,17 @@ You will need to log out and back in (or start a new SSH session) for the group 
 ## AllStarLink 3
 
 Setting up an [AllStarLink](https://www.allstarlink.org/) node with the AIOC is straightforward. ASL3 has built-in support for the AIOC's default USB VID/PID values, so in most cases you won't need to change the device identity at all.
+
+A setup script `setup-asl3.sh` is included in this repository that performs all four steps below in one go:
+
+```bash
+chmod +x setup-asl3.sh
+./setup-asl3.sh
+```
+
+> After running the script for the first time, log out and back in (or start a new SSH session), then unplug and replug the AIOC to ensure the udev and group changes take effect.
+
+If you'd prefer to run the steps manually, they are:
 
 ### 1. udev Rule
 
