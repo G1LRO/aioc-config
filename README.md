@@ -2,7 +2,7 @@
 
 A ready-to-use Raspberry Pi image for configuring the [G1LRO hardware COS variant of the AIOC (All-In-One Cable)](https://g1lro.uk/?p=828) and also [virtual COS](https://g1lro.uk/?p=842).
 
-The image comes with everything pre-installed — Python virtual environment, `aioc-util.py`, AIOC firmware v1.3.0, and a flash script — so you can be up and running in minutes without manual setup.
+The image comes with everything pre-installed — Python virtual environment, `aioc-util.py` (a magical AIOC Config program from Hrafnkell Eiríksson), AIOC firmware v1.3.0, and a flash script — so you can be up and running in minutes without manual setup.
 
 ---
 
