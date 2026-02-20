@@ -184,7 +184,7 @@ You will need to log out and back in (or start a new SSH session) for the group 
 
 Setting up an [AllStarLink](https://www.allstarlink.org/) node with the AIOC is straightforward. ASL3 has built-in support for the AIOC's default USB VID/PID values, so in most cases you won't need to change the device identity at all.
 
-A setup script `setup-asl3-vcos.sh` and 'setup-asl3-hwcos' is included in this repository that performs all four steps below in one go:
+A setup script `setup-asl3-vcos.sh` and 'setup-asl3-hwcos.sh' is included in this repository that performs all four steps below in one go:
 
 ```bash
 wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-asl3.sh
