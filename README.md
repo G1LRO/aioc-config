@@ -2,7 +2,7 @@
 
 A ready-to-use Raspberry Pi image for configuring the [G1LRO hardware COS variant of the AIOC (All-In-One Cable)](https://g1lro.uk/?p=828) and also [virtual COS](https://g1lro.uk/?p=842).
 
-The image comes with everything pre-installed — Python virtual environment, `aioc-util.py` from Hrafnkell Eiríksson, AIOC firmware v1.3.0, and a flash script — so you can be up and running in minutes without manual setup.
+The image comes with everything pre-installed — Python virtual environment, `aioc-util.py`, AIOC firmware v1.3.0, and a flash script — so you can be up and running in minutes without manual setup.
 
 ---
 
@@ -19,7 +19,7 @@ The image comes with everything pre-installed — Python virtual environment, `a
 
 ### 1. Download the Image
 
-Download `aiocutil.img.gz` from this repository's files area.
+Download `aiocutil.img.gz` from this repository.
 
 ### 2. Flash to a microSD Card
 
@@ -28,7 +28,7 @@ Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/):
 1. Open Raspberry Pi Imager
 2. Click **Choose OS → Use custom** and select the downloaded `aiocutil.img.gz`
 3. Choose your microSD card as the target
-4. Click the **settings** before writing — this lets you:
+4. Change the settings before writing — this lets you:
    - Set your own **username and password** (default: user `rln`, password `radioless`)
    - Configure your **Wi-Fi network**
    - Set your **hostname** and **locale** if needed
@@ -38,7 +38,7 @@ Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/):
 
 ### 3. Boot and Connect
 
-Insert the microSD card into your Raspberry Pi and power it on. Once booted, connect using PUTTY or via SSH:
+Insert the microSD card into your Raspberry Pi and power it on. Once booted, connect via **PUTTY** or SSH:
 
 ```bash
 ssh rln@<your-pi-ip-address>
@@ -123,10 +123,10 @@ cd ~/aioc-util
 
 The script will loop, watching for the AIOC to appear in DFU mode on USB. To enter DFU mode on the AIOC:
 
-1. for new AIOC boards, bridge the programming jumper on the AIOC while plugging it into USB, **or**
-2. The flash untiity will find and existing AIOC with firmware and re-flash the 1.3 image
+1. Hold the boot button on the AIOC while plugging it into USB, **or**
+2. Run `./aioc-util.py --reboot` while the device is connected
 
-Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop or the flash process will repeat. Do not interrrupt the process or unplug during the flash, wait for completion and then halt the process 'Ctrl-C'.
+Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop.
 
 ---
 
@@ -138,6 +138,88 @@ Once flashing succeeds, the script will prompt you to unplug the device. Press `
 | Password | `radioless` |
 
 These can (and should) be changed during the Raspberry Pi Imager write process, or afterwards with the `passwd` command.
+
+---
+
+## udev Rules — Allowing HID Access to the AIOC
+
+The AIOC presents itself to Linux as both a USB audio device and a HID (Human Interface Device). The HID interface is what `aioc-util.py` uses to read and write configuration registers. By default on most Linux systems, access to HID devices is restricted to root, which means running `aioc-util.py` as a regular user will fail with a permission error.
+
+To fix this, you need a **udev rule** — a small configuration file that tells Linux to grant your user (or a group) permission to access the device when it is plugged in.
+
+Create a new rules file:
+
+```bash
+sudo nano /etc/udev/rules.d/99-aioc.rules
+```
+
+Add the following line:
+
+```
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="7388", MODE="0660", GROUP="plugdev"
+```
+
+What this does: whenever the AIOC is plugged in (`idVendor` and `idProduct` identify it uniquely), Linux sets the permissions on its HID device node so that members of the `plugdev` group can read and write it. The `plugdev` group is the conventional group for this purpose on Debian-based systems.
+
+Make sure your user is a member of `plugdev`:
+
+```bash
+sudo usermod -aG plugdev $USER
+```
+
+Then reload the udev rules and re-trigger them (or simply unplug and replug the AIOC):
+
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+You will need to log out and back in (or start a new SSH session) for the group membership change to take effect.
+
+> **Note:** If you changed the AIOC's USB VID/PID using `--set-usb` (e.g. to emulate a CM108), update the `idVendor` and `idProduct` values in the rule to match the new values.
+
+---
+
+## AllStarLink 3
+
+Setting up an [AllStarLink](https://www.allstarlink.org/) node with the AIOC is straightforward. ASL3 has built-in support for the AIOC's default USB VID/PID values, so in most cases you won't need to change the device identity at all.
+
+### 1. udev Rule
+
+Make sure the udev rule described above is in place so that ASL3 can access the AIOC's HID interface for COS detection and PTT control.
+
+### 2. Set the VCOS Timing Register
+
+If you are using virtual COS, set the `VCOS_TIMCTRL` register to 1500. This controls the squelch tail timing and gives reliable COS behaviour with ASL3:
+
+```bash
+cd ~/aioc-util
+./aioc-util.py --vcos-timctrl 1500 --store
+```
+
+### 3. Configure res_usbradio
+
+The AIOC's USB VID/PID is already present in `/etc/asterisk/res_usbradio.conf` but commented out. Uncomment it with this one-liner:
+
+```bash
+sudo sed -i 's/^;usb_devices = 1209:7388/usb_devices = 1209:7388/' /etc/asterisk/res_usbradio.conf
+```
+
+Then restart Asterisk:
+
+```bash
+sudo systemctl restart asterisk
+```
+
+### 4. Optional — Change VID/PID to Emulate a CM108
+
+If you prefer to make the AIOC appear as a standard CM108 interface (for example, for compatibility with other software), you can change its USB identity:
+
+```bash
+./aioc-util.py --set-usb 0x0d8c 0x000c --store
+```
+
+Note that if you do this, you will need to update your udev rule to match the new VID/PID, and you should use the standard CM108 entry in `res_usbradio.conf` instead of the AIOC-specific one.
 
 ---
 
