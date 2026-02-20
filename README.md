@@ -123,8 +123,8 @@ cd ~/aioc-util
 
 The script will loop, watching for the AIOC to appear in DFU mode on USB. To enter DFU mode on the AIOC:
 
-1. Hold the boot button on the AIOC while plugging it into USB, **or**
-2. Run `./aioc-util.py --reboot` while the device is connected
+1. Jumper the programming pins on the AIOC while plugging it into USB, **or**
+2. for existing pre-flashed AIOC, run `./aioc-util.py --reboot` while the device is connected
 
 Once flashing succeeds, the script will prompt you to unplug the device. Press `Ctrl+C` to exit the loop.
 
