@@ -184,7 +184,7 @@ You will need to log out and back in (or start a new SSH session) for the group 
 
 Setting up an [AllStarLink](https://www.allstarlink.org/) node with the AIOC is straightforward. ASL3 has built-in support for the AIOC's default USB VID/PID values, so in most cases you won't need to change the device identity at all.
 
-A setup script `setup-asl3.sh` is included in this repository that performs all four steps below in one go:
+A setup script `setup-asl3-vcos.sh` and 'setup-asl3-hwcos' is included in this repository that performs all four steps below in one go:
 
 ```bash
 wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-asl3.sh
@@ -200,13 +200,21 @@ If you'd prefer to run the steps manually, they are:
 
 Make sure the udev rule described above is in place so that ASL3 can access the AIOC's HID interface for COS detection and PTT control.
 
-### 2. Set the VCOS Timing Register
+### 2a. Set the VCOS Timing Register
 
 If you are using virtual COS, set the `VCOS_TIMCTRL` register to 1500. This controls the squelch tail timing and gives reliable COS behaviour with ASL3:
 
 ```bash
 cd ~/aioc-util
 ./aioc-util.py --vcos-timctr 1500 --store
+```
+### 2b. Set the HWCOS Register
+
+If you are using Hardware COS, set the virtual-button inputs for the COS signal This controls the squelch tail timing and gives reliable COS behaviour with ASL3:
+
+```bash
+cd ~/aioc-util
+ ./aioc-util.py --enable-hwcos --store
 ```
 
 ### 3. Configure res_usbradio
