@@ -206,7 +206,7 @@ If you are using virtual COS, set the `VCOS_TIMCTRL` register to 1500. This cont
 
 ```bash
 cd ~/aioc-util
-./aioc-util.py --vcos-timctrl 1500 --store
+./aioc-util.py --vcos-timctr 1500 --store
 ```
 
 ### 3. Configure res_usbradio
