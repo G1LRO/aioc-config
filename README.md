@@ -187,8 +187,10 @@ Setting up an [AllStarLink](https://www.allstarlink.org/) node with the AIOC is 
 A setup script `setup-asl3-vcos.sh` and `setup-asl3-hwcos.sh` is included in this repository that performs all four steps below in one go:
 
 ```bash
-wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-asl3.sh
-chmod +x setup-asl3.sh
+wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-asl3-hwcos.sh
+wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-asl3-vcos.sh
+chmod +x setup-asl3-hwcos.sh
+chmod +x setup-asl3-vcos.sh
 ./setup-asl3.sh
 ```
 
