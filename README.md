@@ -191,7 +191,9 @@ wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-a
 wget https://raw.githubusercontent.com/G1LRO/aioc-config/refs/heads/main/setup-asl3-vcos.sh
 chmod +x setup-asl3-hwcos.sh
 chmod +x setup-asl3-vcos.sh
-./setup-asl3.sh
+./setup-asl3-vcos.sh
+# ./setup-asl3-hwcos.sh
+# ^^ run whichever line is appropriate for your cos type
 ```
 
 > After running the script for the first time, log out and back in (or start a new SSH session), then unplug and replug the AIOC to ensure the udev and group changes take effect.
